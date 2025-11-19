@@ -87,6 +87,8 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.listen(8080, () => {
-    console.log("http://localhost:8080/")
-})
+// app.listen(8080, () => {
+//     console.log("http://localhost:8080/")
+// })
+
+module.exports = app;
