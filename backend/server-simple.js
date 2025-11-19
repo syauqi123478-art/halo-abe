@@ -272,3 +272,5 @@ process.on('uncaughtException', (err) => {
 });
 
 app.listen(8080, () => console.log('Backend berjalan di http://localhost:8080'));
+
+module.exports = app;

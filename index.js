@@ -22,8 +22,6 @@ app.get('/public/:file', (req, res) => {
     res.sendFile(__dirname + "/public/" + req.params.file)
 })
 
-import { createClient } from '@supabase/supabase-js';
-
 const supabaseUrl = "https://anyylsedulbqhtsxteej.supabase.co";
 const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFueXlsc2VkdWxicWh0c3h0ZWVqIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MzI1NDA2NCwiZXhwIjoyMDc4ODMwMDY0fQ.V_3FdZZpsfmXTSsxbROgXHk499XbnQQvB-tSg_VzbbI"; // gunakan service role key di backend
 const supabase = createClient(supabaseUrl, supabaseKey);
