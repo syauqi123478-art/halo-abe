@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Halo, ABE — SPA</title>
+  <link rel="stylesheet" href="/public/style.css" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+    body { background: #fafafa; color: #687d31; }
+    .navbar { display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background: #d1e8ff; box-shadow: 0 2px 6px #fff; position: fixed; top:0; width:100%; z-index:10; }
+    nav a { margin-left: 1rem; text-decoration: none; font-weight: bold; color: #687d31; }
+    main { padding: 120px 20px; max-width: 1000px; margin: 0 auto; }
+    h2, h3 { margin-bottom: 20px; }
+    .card { background: white; padding: 25px 30px; border-radius: 12px; box-shadow: 0 2px 10px #0001; margin-bottom: 25px; }
+    .form-group { margin-bottom: 15px; display:flex; flex-direction:column; gap: 6px; }
+    input, select, textarea { padding: 10px; border:1px solid #ccc; border-radius: 8px; font-size: 15px; }
+    button { padding: 10px 20px; background:#222; color:white; border:none; border-radius:8px; cursor:pointer; font-size:15px; align-self:flex-start; }
+    button:hover { opacity:0.85; transition:0.3s; }
+
+    /* Checklist */
+    #checklist { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
+    #checklist label { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script>
+    const app = document.getElementById("app");
+    window.addEventListener("hashchange", loadPage);
+    window.addEventListener("load", loadPage);
+
+    function loadPage() {
+      const route = location.hash.replace("#/", "") || "home";
+      const pages = { home: homePage, motivation: motivationPage, tugas: tugasPage, finance: financePage, habit: habitPage };
+      app.innerHTML = pages[route] ? pages[route]() : "<h2>404 Not Found</h2>";
+      if (typeof initFunctions[route] === "function") initFunctions[route]();
+    }
+
+    function homePage() {
+      return `
+      <section class="home-hero soft">
+        <div class="hero-left soft">
+          <div class="overlay-text soft">
+            <h1 class="hero-title soft">Halo, ABE</h1>
+            <p class="hero-sub soft">Asisten Belajar</p>
+          </div>
+        </div>
+        <div class="hero-right soft">
+          <h2 class="right-title soft">Selamat datang!</h2>
+          <p class="right-desc soft">
+            Halo, ABE membantu kamu mengatur motivasi, tugas, keuangan, dan kebiasaan sehat secara efisien.
+          </p>
+          <video class="hero-video soft" src="/public/maskot.mp4" autoplay loop muted playsinline></video>
+        </div>
+      </section>`;
+    }
+
+    function motivationPage() {
+      return `
+        <section class="motivation-bg">
+          <h2>Motivation</h2>
+          <p id="motext"></p>
+          <button id="shuffleBtn">Shuffle</button>
+        </section>`;
+    }
+
+    function tugasPage() {
+      return `
+        <h2>Tugas</h2>
+        <div class="task-layout">
+          <div class="task-left">
+            <div class="card">
+              <div class="form-group">
+                <label>Nama Tugas</label>
+                <input id="tName" placeholder="Contoh: Laporan Fisika"/>
+              </div>
+              <div class="form-group">
+                <label>Deadline</label>
+                <input type="date" id="tDeadline" />
+              </div>
+              <div class="form-group">
+                <label>Mata Pelajaran</label>
+                <input id="tMapel" placeholder="Contoh: Fisika"/>
+              </div>
+              <div class="form-group">
+                <label>Tingkat Kesulitann</label>
+                <div class="stars" id="starRate">
+                  <span data-v="1">★</span>
+                  <span data-v="2">★</span>
+                  <span data-v="3">★</span>
+                  <span data-v="4">★</span>
+                  <span data-v="5">★</span>
+                </div>
+              </div>
+              <button id="addTask">Tambah Tugas</button>
+            </div>
+            <div class="task-slider">
+  <div class="task-slider-track" id="taskSliderTrack">
+    <img src="/public/tugas1.jpeg" />
+    <img src="/public/tugas2.jpeg" />
+    <img src="/public/tugas3.jpeg" />
+    <img src="/public/tugas4.jpeg" />
+  </div>
+</div>
+
+          </div>
+          <div class="task-right">
+            <div class="card">
+              <h3>Prioritas Tugas</h3>
+              <ul id="taskList"></ul>
+              <h3 style="margin-top:20px;">History Tugas</h3>
+              <ul id="taskHistory"></ul>
+            </div>
+            <div class="card">
+              <h3>Kalender Tugas</h3>
+              <div id="calendar"></div>
+              <p id="taskOnDate" style="margin-top:10px;font-size:14px;color:#444;"></p>
+            </div>
+          </div>
+        </div>`;
+    }
+
+    function financePage() {
+      return `
+        <h2>Finance</h2>
+        <div class="card">
+          <div class="form-group">
+            <label>Pemasukan Mingguan</label>
+            <input id="income" placeholder="Rp 0" />
+          </div>
+          <div class="form-group">
+            <label>Kebutuhan</label>
+            <div id="checklist">
+              <label><input type="checkbox" value="Uang Saku"> Uang Saku</label>
+              <label><input type="checkbox" value="Kas"> Kas</label>
+              <label><input type="checkbox" value="Sekolah"> Sekolah</label>
+              <label><input type="checkbox" value="Tabungan"> Tabungan</label>
+              <label><input type="checkbox" value="Dana Darurat"> Dana Darurat</label>
+              <label><input type="checkbox" value="Keperluan rumah"> Keperluan rumah</label>
+              <label><input type="checkbox" value="Uang makan"> Uang makan</label>
+              <label><input type="checkbox" value="Acara"> Acara</label>
+            </div>
+          </div>
+          <button id="calcFinance">Hitung</button>
+        </div>
+        <ul id="financeResult"></ul>
+        <div class="card" style="margin-top:20px;">
+      <h3>Grafik Pembagian Uang</h3>
+      <canvas id="financeChart"></canvas>
+    </div>
+        `;
+    }
+
+ function habitPage() {
+  return `
+    <h2>Habit</h2>
+
+    <div class="habit-card">
+      <h3>Stress Management</h3>
+      <div class="form-group">
+        <label>Alasan Stress</label>
+        <select id="sReason">
+          <option value="">Pilih alasan</option>
+          <option value="tugas">Tugas Sekolah</option>
+          <option value="bullying">Bullying</option>
+          <option value="ekonomi">Ekonomi</option>
+          <option value="keluarga">Keluarga</option>
+          <option value="teman">Teman</option>
+          <option value="lain">Yang Lain</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Tingkat Stress</label>
+        <div class="stars" id="stressStars">
+          <span data-v="1">★</span>
+          <span data-v="2">★</span>
+          <span data-v="3">★</span>
+          <span data-v="4">★</span>
+          <span data-v="5">★</span>
+        </div>
+      </div>
+      <button id="solveStress">Dapatkan Solusi</button>
+      <p id="sResult"></p>
+    </div>
+
+    <div class="habit-card">
+      <h3>Kalori Harian</h3>
+      <div class="form-group">
+        <label>Berat Badan (kg)</label>
+        <input id="weight" type="number" placeholder="Contoh: 60" />
+      </div>
+      <div class="form-group">
+        <label>Tinggi Badan (cm)</label>
+        <input id="height" type="number" placeholder="Contoh: 170" />
+      </div>
+      <div class="form-group">
+        <label>Usia</label>
+        <input id="age" type="number" placeholder="Contoh: 20" />
+      </div>
+      <div class="form-group">
+        <label>Jenis Kelamin</label>
+        <select id="gender">
+          <option value="">Pilih</option>
+          <option value="male">Laki-laki</option>
+          <option value="female">Perempuan</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Aktivitas Harian</label>
+        <select id="activity">
+          <option value="">Pilih</option>
+          <option value="1.2">Jarang bergerak</option>
+          <option value="1.375">Ringan (olahraga 1-2x/minggu)</option>
+          <option value="1.55">Sedang (olahraga 3-5x/minggu)</option>
+          <option value="1.725">Aktif (olahraga 6-7x/minggu)</option>
+          <option value="1.9">Sangat aktif (pekerjaan fisik berat)</option>
+        </select>
+      </div>
+      <button id="calcCalories">Hitung Kalori</button>
+      <p id="calResult"></p>
+    </div>
+    <!-- 🔵 Tabel Aktivitas Harian -->
+<div class="habit-box">
+  <h3>📅 Aktivitas Harian</h3>
+
+  <table class="habit-table">
+    <thead>
+      <tr>
+        <th>Kegiatan</th>
+        <th>Pagi</th>
+        <th>Siang</th>
+        <th>Malam</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Minum Air</td>
+        <td><input type="checkbox" class="hab water-morning"></td>
+        <td><input type="checkbox" class="hab water-noon"></td>
+        <td><input type="checkbox" class="hab water-night"></td>
+      </tr>
+      <tr>
+        <td>Makan</td>
+        <td><input type="checkbox" class="hab eat-morning"></td>
+        <td><input type="checkbox" class="hab eat-noon"></td>
+        <td><input type="checkbox" class="hab eat-night"></td>
+      </tr>
+      <tr>
+        <td>Tidur</td>
+        <td>-</td>
+        <td>-</td>
+        <td><input type="checkbox" class="hab sleep-night"></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <button id="resetHabitTable">Reset Checklist Hari Ini</button>
+</div>
+
+  `;
+}
+
+
+
+    const initFunctions = {
+      motivation() {
+        const list = [
+          "Kamu lebih kuat dari yang kamu kira.",
+          "Progres kecil tetaplah progres.",
+          "Tetap maju, jangan berhenti.",
+          "Kerja kerasmu akan terbayar.",
+          "Tidak apa-apa istirahat, asal jangan menyerah.",
+          "Setiap hari adalah kesempatan baru.",
+          "Jangan bandingkan perjalananmu dengan orang lain; setiap orang punya waktunya sendiri untuk bersinar.",
+        ];
+        const motext = document.getElementById("motext");
+        const shuffleBtn = document.getElementById("shuffleBtn");
+        const randomQuote = () => motext.innerText = list[Math.floor(Math.random() * list.length)];
+        shuffleBtn.addEventListener("click", randomQuote);
+        randomQuote();
+      },
+
+      tugas() {
+        const stars = document.querySelectorAll("#starRate span");
+        let rating = 0;
+        const tasks = [];
+        const history = [];
+
+        stars.forEach(star => {
+          star.addEventListener("click", () => {
+            rating = star.dataset.v;
+            stars.forEach(s => s.classList.toggle("active", s.dataset.v <= rating));
+          });
+        });
+
+        document.getElementById("addTask").onclick = () => {
+          const name = tName.value.trim();
+          const mapel = tMapel.value.trim();
+          const deadline = tDeadline.value;
+          if (!name || !mapel || !deadline) return alert("Lengkapi semua data tugas!");
+          tasks.push({ name, mapel, deadline, rating: Number(rating) });
+          renderTasks();
+          renderCalendar();
+
+ (file truncated during copy)
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <main id="app"></main>  </header>    </nav>      <a href="#/habit">Habit</a>      <a href="#/finance">Finance</a>      <a href="#/tugas">Tugas</a>      <a href="#/motivation">Motivation</a>      <a href="#/home">Home</a>    <nav>    <h1 class="logo">Halo, ABE</h1>  <header class="navbar"><body></head>
+  </style>}  display: block;  height: 300px !important;  width: 100% !important;#financeChart {
+/* Chart box */}  box-shadow: 0 6px 14px rgba(0,0,0,0.12);  transform: translateY(-3px);
+#financeResult li:hover {}  transition: 0.25s;  box-shadow: 0 4px 12px rgba(0,0,0,0.07);  border-radius: 14px;  background: linear-gradient(to bottom right, #d9f8ef, #c8f4e5);  color: #2b4a42;  font-weight: bold;  text-align: center;  padding: 18px;  flex: 1 1 150px;  list-style: none;
+#financeResult li {}  padding-left: 0;  margin-top: 15px;  gap: 12px;  flex-wrap: wrap;  display: flex;#financeResult {
+/* === FINANCE CLEAN === */
+}  text-align: center;  width: auto;
+  max-width: 90px;       /* ⬅ MENDEFINISIKAN BATAS PANJANG */  box-shadow: 0 3px 10px rgba(0,0,0,0.18);  transition: 0.2s ease;  backdrop-filter: blur(3px);  cursor: pointer;  font-weight: 600;  font-size: 0.75rem;  border-radius: 8px;  border: none;  padding: 15px 20px;     /* padding kecil */  color: #427444;  background: rgba(255,255,255,0.9);
+#shuffleBtn {}  margin-bottom: 1.8rem;  line-height: 1.4;  font-size: 1.2rem;  max-width: 500px;
+.motivation-bg p {}  margin-bottom: 1rem;  font-size: 2.2rem;
+.motivation-bg h2 {}  padding: 0 20px;  color: white;
+  text-align: center;  align-items: center;  justify-content: center;  flex-direction: column;
+  display: flex;  background-blend-mode: multiply;  background-color: rgba(0,0,0,0.25);  background: url("/public/motivasi.jpeg") center center/cover no-repeat;  width: 100%;  height: 100vh;  position: relative;.motivation-bg {
+/* === MOTIVATION SECTION — CLEAN & CENTERED === */}  cursor: pointer;  border-radius: 8px;  color: white;  background: #e95656;  border: none;  padding: 10px;  width: 100%;  margin-top: 12px;
+#resetHabitTable {}  color: white;  background: #3a6f54;
+.habit-table th {}  text-align: center;  padding: 10px;  border: 1px solid #ddd;.habit-table td {
+.habit-table th, }  box-shadow: 0 2px 5px rgba(0,0,0,0.1);  overflow: hidden;  border-radius: 10px;  background: white;  margin-top: 10px;  border-collapse: collapse;  width: 100%;
+.habit-table {
+.slider-btn:hover { background: #eef7ff; }}  box-shadow: 0 4px 10px rgba(0,0,0,0.15);  border-radius: 14px;  max-width: 260px;  width: 100%;
+.task-slider img {}  transition: transform 0.4s ease;  gap: 10px;  display: flex;
+.task-slider-track {}  position: relative;  border-radius: 14px;  overflow: hidden;  width: 100%;  margin-top: 20px;.task-slider {/* === SLIDER GALLERY UNTUK TUGAS === */}  display: block;  height: 300px !important;  width: 100% !important;#financeChart {/* ==== FIX AGAR GRAFIK CHART.JS MUNCUL ==== */}  line-height: 1.5;  font-size: 1rem;  padding: 14px !important;  border-radius: 12px !important;#sResult div {
+/* Result box */}  transform: scale(1.25);
+#stressStars span:hover {}  transition: 0.2s;  margin-right: 4px;  font-size: 34px;
+#stressStars span {}  border-radius: 20px;.habit-card {
+/* === HABIT PAGE UPGRADE === */}  box-shadow: 0 4px 12px rgba(0,0,0,0.07);  padding: 18px;  font-size: 1rem;  background: linear-gradient(to bottom right, #d9f8ef, #c8f4e5);  border-radius: 14px;#financeResult li {
+/* === FINANCE UPGRADE === */}  font-weight: bold;  background: #d7f9d7;.calendar .today {}  background: #fff7c8;.calendar .has-task {}  padding: 12px 0;  font-size: 15px;  border-radius: 10px;.calendar div {
+/* Calendar upgrade */}  background: #ffe5e5;  border-left: 6px solid #ff7272;
+#taskList li.overdue {}  border-left: 6px solid #c8e6c9;  box-shadow: 0 4px 12px rgba(0,0,0,0.05);  padding: 16px 18px;  border-radius: 14px;
+#taskList li, #taskHistory li {}  gap: 40px;.task-layout {/* === TUGAS UPGRADE === */}  line-height: 1.7;  font-size: 1.05rem;
+.right-desc.soft {}  font-size: 1.9rem;.right-title.soft {
+/* Right side text */}  border-radius: 20px 0 0 20px;
+.hero-left.soft {}  border-radius: 0 20px 20px 0;  border-left: none;
+.hero-right.soft {}  box-shadow: 0 6px 18px rgba(0,0,0,0.08);  overflow: hidden;  border-radius: 20px;.home-hero.soft {
+/* === HOME HERO UPGRADE === */}  transform: translateY(-2px);  opacity: 0.9;
+button:hover {}  transition: 0.25s;  letter-spacing: 0.4px;  font-weight: 600;  border-radius: 12px;  padding: 12px 22px;  background: linear-gradient(to right, #3a6f54, #2d5643);button {
+/* Button upgrade */}  box-shadow: 0 0 6px rgba(90,153,255,0.4);  outline: none;  border-color: #89c5ff;textarea:focus {select:focus,
+input:focus,}  transition: 0.25s;  border-radius: 10px;  background: #f9fbff;input, select, textarea {
+/* Input & Select upgrade */}  border: 1px solid #e8edf5;  box-shadow: 0 6px 16px rgba(0,0,0,0.06);  background: #ffffff;  border-radius: 18px;.card, .habit-card {
+/* === CARD UPGRADE === */}  color: #1f3b34;  background: #e1f5ff;
+nav a:hover {}  transition: 0.25s;  border-radius: 8px;  padding: 8px 14px;  color: #2b4a42;
+nav a {}  backdrop-filter: blur(8px);  padding: 1rem 3rem;  border-bottom: 1px solid #e3e8ee;  background: #ffffff;.navbar {
+/* Navbar upgrade */}  font-family: 'Poppins', Arial, sans-serif;  color: #333;  background: #f4f7fb;body {
+/* === GLOBAL UPGRADE === */}  gap: 25px;  flex-direction: column;  display: flex;.habit-section {
+/* Extra spacing */}  to { opacity: 1; transform: translateY(0); }  from { opacity: 0; transform: translateY(6px); }
+@keyframes fadeIn {}  animation: fadeIn 0.35s ease-in-out;#calResult {#sResult div,
+/* Result box animation */}  transform: scale(1.2);
+#stressStars span:hover {}  transition: 0.2s;  padding: 3px;  font-size: 32px;#stressStars span {
+/* Stars styling */}  transform: translateY(-2px);  background: #2e5a45;
+.habit-card button:hover {}  box-shadow: 0 3px 8px rgba(0,0,0,0.15);  transition: 0.25s;  cursor: pointer;  border: none;  color: white;  font-size: 15px;  border-radius: 10px;  background: #3a6f54;  padding: 10px 20px;.habit-card button {
+/* Button Habit */}  background: #f8fbff;  border: 1px solid #cbd9e9;  border-radius: 10px;.habit-card input {.habit-card select,
+/* Dropdown & input */}  color: #2d493f;  font-weight: 600;.habit-card label {
+/* Label input */}  transform: translateY(-3px);
+.habit-card:hover {}  transition: 0.3s;  margin-bottom: 30px;  border: 1px solid #e6effb;  box-shadow: 0 4px 14px rgba(0,0,0,0.08);  border-radius: 18px;  padding: 25px;  background: linear-gradient(to bottom right, #ffffff, #f3f9ff);.habit-card {
+/* Card Habit lebih elegan */}  margin-bottom: 20px;  font-weight: 700;  color: #2b4a42;#app h2 {
+/* Judul Habit */
+    /* --- HABIT PAGE RE-DESIGN --- */    }      color: #2b4a42;      font-weight: bold;      text-align: center;      flex: 1 1 150px;      box-shadow: 0 2px 6px rgba(0,0,0,0.1);      border-radius: 10px;      padding: 15px 20px;      background: #c8f4e5;      list-style: none;    #financeResult li {    }      padding-left: 0;      margin-top: 15px;      gap: 10px;      flex-wrap: wrap;      display: flex;    #financeResult {
+    /* Finance boxes */    }      align-self: center;      transition: 0.3s;      font-size: 1rem;      cursor: pointer;      padding: 12px 25px;      border-radius: 8px;      border: none;      color: #333;      background: rgba(255,255,255,0.9);    #shuffleBtn {    }      margin: 0.5rem 0;      z-index: 2;      position: relative;    .motivation-bg button {    .motivation-bg p,    .motivation-bg h2,    }      color: white;      text-align: center;      align-items: center;      justify-content: center;      flex-direction: column;      display: flex;      background: url("/public/motivasi.jpeg") center center/cover no-repeat;      width: 100%;      height: 100vh;      position: relative;    .motivation-bg {
+    /* Motivation full background */    .hero-video.soft { width:140px; height:auto; align-self:center; border-radius:10px; }    .right-desc.soft { color:#3a4a3f; font-size:1rem; line-height:1.8; margin-bottom:1.5rem; max-width:600px; }    .right-title.soft { color:#2b4a42; font-size:1.6rem; margin-bottom:1rem; font-weight:700; }    .hero-sub.soft { font-size:0.95rem; opacity:0.95; }    .hero-title.soft { font-size:2.2rem; font-weight:700; margin-bottom:0.4rem; }    .overlay-text.soft { color:white; text-shadow:0 2px 6px rgba(0,0,0,0.5); }    .hero-right.soft { flex:2; background:white; padding:4rem; display:flex; flex-direction:column; justify-content:flex-start; border-left:6px solid #C8F4E5; box-shadow:-2px 0 8px rgba(0,0,0,0.05); }    .hero-left.soft { flex:3; background:url("/public/Home.jpeg") center center/cover no-repeat; border-radius:0; display:flex; flex-direction:column; justify-content:flex-end; padding:2rem 3rem; color:white; box-shadow:2px 0 8px rgba(0,0,0,0.05); }    .home-hero.soft { display:flex; justify-content:space-between; align-items:stretch; width:100%; height:80vh; background:#e8f4ff; margin-top:10px; }
+    /* Home */    @media (max-width: 900px) { .task-layout { grid-template-columns: 1fr; } }    .task-left, .task-right { display: flex; flex-direction: column; gap: 20px; }    .task-layout { display: grid; grid-template-columns: 1.2fr 1fr; gap: 30px; align-items: start; }
+    /* Layout tugas rapi */    .calendar .today { background:#c8f7c5; border:1px solid #9ac29a; }    .calendar .has-task { background:#f9ffd1; font-weight:600; border:1px solid #ccc; }    .calendar div:hover { transform:scale(1.05); }    .calendar div { padding:10px; background:white; border-radius:6px; box-shadow:0 1px 4px #0001; text-align:center; font-size:14px; cursor:pointer; transition:0.2s; }    .calendar { display:grid; grid-template-columns: repeat(7, 1fr); gap:6px; margin-top:10px; }    #calendar { margin-top: 15px; }
+    /* Calendar */    #taskList li.overdue { background: #ffd4d4; border: 1px solid #ff9d9d; }    #taskList input[type="checkbox"] { transform: scale(1.3); cursor: pointer; }    #taskList li, #taskHistory li { background: white; padding: 12px 15px; border-radius: 10px; box-shadow: 0 1px 5px #0001; display: flex; align-items: center; justify-content: space-between; }    #taskList, #taskHistory { list-style: none; margin-top: 15px; display: flex; flex-direction: column; gap: 10px; padding-left: 0; }
+    /* Task list */    .stars .active { color: gold; }    .stars span { font-size: 28px; cursor: pointer; color: #ccc; transition: 0.2s; }    .stars { display: flex; gap: 5px; }    /* Star rating */

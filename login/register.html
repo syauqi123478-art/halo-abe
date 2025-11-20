@@ -6,20 +6,36 @@
   <title>Daftar — Halo, ABE</title>
   <link rel="stylesheet" href="/style.css">
   <link rel="stylesheet" href="/auth.css">
-  <style>.logo{font-weight:800;color:var(--accent)}</style>
+  <style>
+    .logo{font-weight:800;color:var(--accent)}
+    /* Fullscreen background for register */
+    body {
+      background: url('/backgroundlogin.jpeg') center center/cover no-repeat fixed;
+      min-height: 100vh;
+      background-color: #000;
+      position: relative;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.35);
+      z-index: 1;
+      pointer-events: none;
+    }
+    .navbar, .auth-wrap, .auth-card {
+      position: relative;
+      z-index: 2;
+    }
+  </style>
 </head>
 <body>
-  <header class="navbar">
-    <h1 class="logo">Halo, ABE</h1>
-    <nav>
-      <a href="/">Home</a>
-      <a href="/login/login.html">Masuk</a>
-    </nav>
-  </header>
+  <header class="navbar"></header>
 
   <main>
     <div class="auth-wrap">
       <div class="auth-left">
+        <p style="font-weight:800; color:#2b4a42; margin-bottom:6px; font-size:1.6rem;">Halo, ABE</p>
         <h1>Buat akun baru</h1>
         <p>Daftar dengan username dan kata sandi. Setelah mendaftar, kamu otomatis akan masuk.</p>
       </div>

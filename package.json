@@ -6,19 +6,25 @@
   "scripts": {
     "start": "node backend/server-simple.js",
     "dev": "node backend/server-simple.js",
-    "setup": "cd backend && npm install && cd ..",
+    "build": "cd backend && npm install && cd ..",
     "setup:dev": "cd backend && npm install && cd .. && npm run dev"
   },
-  "keywords": ["education", "learning", "student"],
+  "keywords": [
+    "education",
+    "learning",
+    "student"
+  ],
   "author": "Halo ABE Team",
   "license": "MIT",
   "type": "commonjs",
   "dependencies": {
     "bcryptjs": "^3.0.3",
+    "connect-mongo": "^5.1.0",
     "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
     "express": "^5.1.0",
     "express-session": "^1.17.3",
-    "dotenv": "^16.3.1"
+    "mongoose": "^8.20.0"
   },
   "engines": {
     "node": "20.x"

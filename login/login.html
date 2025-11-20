@@ -6,7 +6,30 @@
   <title>Masuk — Halo, ABE</title>
   <link rel="stylesheet" href="/style.css">
   <link rel="stylesheet" href="/auth.css">
-  <style> .logo{font-weight:800;color:var(--accent)} </style>
+  <style>
+    .logo{font-weight:800;color:var(--accent)}
+    /* Fullscreen background for login */
+    body {
+      background: url('/backgroundlogin.jpeg') center center/cover no-repeat fixed;
+      min-height: 100vh;
+      background-color: #000;
+      position: relative;
+    }
+    /* dim layer so text remains readable */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.35);
+      z-index: 1;
+      pointer-events: none;
+    }
+    /* Bring auth content above the overlay */
+    .navbar, .auth-wrap, .auth-card {
+      position: relative;
+      z-index: 2;
+    }
+  </style>
 </head>
 <body>
   <header class="navbar">

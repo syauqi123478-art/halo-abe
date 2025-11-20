@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const bcrypt = require('bcryptjs');
-const { createClient } = require("@supabase/supabase-js");
+// const { createClient } = require("@supabase/supabase-js");
 const User = require('./models/User');
 
 // Read MONGO_URI early so session setup can reference it
@@ -58,9 +58,9 @@ app.use((req, res, next) => {
   next();
 });
 
-const supabaseUrl = "https://anyylsedulbqhtsxteej.supabase.co";
-const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFueXlsc2VkdWxicWh0c3h0ZWVqIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MzI1NDA2NCwiZXhwIjoyMDc4ODMwMDY0fQ.V_3FdZZpsfmXTSsxbROgXHk499XbnQQvB-tSg_VzbbI"; // backend gunakan service role
-const supabase = createClient(supabaseUrl, supabaseKey);
+// const supabaseUrl = "https://anyylsedulbqhtsxteej.supabase.co";
+// const supabaseKey = "REDACTED-FOR-SAFETY"; // backend gunakan service role
+// const supabase = createClient(supabaseUrl, supabaseKey);
 
 // ---------- MongoDB via Mongoose ----------
 const envPathUsed = dotenvResult && dotenvResult.parsed ? path.resolve(__dirname, '..', '.env') : '(default lookup)';
@@ -165,9 +165,6 @@ app.get('/api/me', async (req, res) => {
   res.json({ id: u._id, username: u.username, createdAt: u.createdAt });
 });
 
-// --------------------
-// GET PROFILE
-// --------------------
 app.get("/profile/:id", async (req, res) => {
   const { id } = req.params;
 
